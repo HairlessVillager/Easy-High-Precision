@@ -1,9 +1,10 @@
 #include <cstdio>
 #include <cstring>
+#include <cctype>
 
 class Bignum {
 	private:
-		static const int MAX = 1000;
+		static const int MAX = 4000;
 		int value[MAX];
 	public:
 		// lowest bit : i = 0
@@ -27,31 +28,40 @@ class Bignum {
 			v %= 10;
 			value[index] = v;
 		}
-		
+
 		void scan() {
 			char str[MAX];
 			scanf("%s", str);
 			int len = strlen(str);
 
 			for(int i = 0; i < len; i++) {
-				value[len - i - 1] = str[i] - '0';
+				if(isdigit(str[i])){
+					value[len - i - 1] = str[i] - '0';
+				}
+				else{
+					value[len - i - 1] = 0;
+				}
 			}
 		}
-		
+
 		void print() {
 			int i = MAX - 1;
-			for(; value[i] == 0; i--);
-			for(; i >= 0; i--) {
-				printf("%d", value[i]);
+			for(; value[i] == 0 && i > 0; i--);
+			if(i == 0) {
+				printf("%d", value[0]);
+			} else {
+				for(; i >= 0; i--) {
+					printf("%d", value[i]);
+				}
 			}
 		}
-		
-		int getLen(){
+
+		int getLen() {
 			int i = MAX - 1;
 			for(; value[i] == 0; i--);
 			return i + 1;
 		}
-		
+
 		void operator=(const unsigned long long int& N) {
 			unsigned long long int A = N;
 			for(int i = 0; A > 0; i++) {
